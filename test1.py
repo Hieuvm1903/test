@@ -5,7 +5,7 @@ import numpy as np
 st.title('Uber pickups in NYC')
 
 DATE_COLUMN = 'date/time'
-DATA_URL = ('https://docs.google.com/spreadsheets/d/1bpmSsWZt71RKVjE5DPAhU5hN9fiRbFrd/edit?usp=sharing&ouid=116358797811869753987&rtpof=true&sd=true')
+DATA_URL = ('accident_data.xlsx')
 
 @st.cache_data
 def load_data(nrows):
