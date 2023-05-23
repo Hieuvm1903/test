@@ -75,9 +75,9 @@ filtered_data = data2[(data2['time'].dt.hour >= hour_to_filter) & (data2['time']
 #st.map(filtered_data)
 # Using object notation
 st.write(len(filtered_data.index))
-dataset = filtered_data[:100]
-max_cluster_distance = 100
-min_samples_in_cluster = 5
+dataset = filtered_data
+max_cluster_distance = 150
+min_samples_in_cluster = 12
 
 location_data = dataset[['latitude','longitude']]
 
@@ -102,4 +102,3 @@ for i in range(0,len(dataset)):
         folium.CircleMarker([dataset['latitude'].iloc[i],dataset['longitude'].iloc[i]], radius = 3, color = col, fill = col).add_to(map_plot)
 folium_static(map_plot)
 st.write(len(dataset.index))
-st.map(dataset[dataset['Cluster']>=0])
