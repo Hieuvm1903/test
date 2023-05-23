@@ -40,10 +40,7 @@ vis['time']= pd.to_datetime(vis['time'],format= '%H:%M' )
 data2 = vis
 
 
-if st.checkbox('Show raw data'):
-    st.subheader('Raw data')
-    st.write(data2)
-    st.map(data2)
+
 
 from geopy.distance import great_circle
 
@@ -72,10 +69,15 @@ with st.sidebar:
 
 filtered_data = data2[(data2['time'].dt.hour >= hour_to_filter) & (data2['time'].dt.hour < hour_end)
 &(data2['date'].dt.date >=date1) & (data2['date'].dt.date <= date2)]
-
+if st.checkbox('Show raw data'):
+    st.subheader('Raw data')
+    st.write(data[(data['time'].dt.hour >= hour_to_filter) & (data['time'].dt.hour < hour_end)
+&(data['date'].dt.date >=date1) & (data['date'].dt.date <= date2)])
+    st.map(data2)
 
 # Using object notation
 st.write(len(filtered_data.index))
+
 dataset = filtered_data
 max_cluster_distance = 150
 min_samples_in_cluster = 12
