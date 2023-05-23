@@ -43,6 +43,7 @@ data2 = vis
 if st.checkbox('Show raw data'):
     st.subheader('Raw data')
     st.write(data2)
+    st.map(data2)
 
 from geopy.distance import great_circle
 
@@ -72,7 +73,7 @@ with st.sidebar:
 filtered_data = data2[(data2['time'].dt.hour >= hour_to_filter) & (data2['time'].dt.hour < hour_end)
 &(data2['date'].dt.date >=date1) & (data2['date'].dt.date <= date2)]
 
-#st.map(filtered_data)
+
 # Using object notation
 st.write(len(filtered_data.index))
 dataset = filtered_data
