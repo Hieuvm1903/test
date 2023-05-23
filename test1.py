@@ -72,7 +72,7 @@ filtered_data = data2[(data2['time'].dt.hour >= hour_to_filter) & (data2['time']
 if st.checkbox('Show raw data'):
     st.subheader('Raw data')
     st.write(data[(data['time'].dt.hour >= hour_to_filter) & (data['time'].dt.hour < hour_end)
-&(data['date'].dt.date >=date1) & (data['date'].dt.date <= date2)])
+    &(data['date'].dt.date >=date1) & (data['date'].dt.date <= date2)])
     st.map(data2)
 
 # Using object notation
