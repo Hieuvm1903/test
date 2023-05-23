@@ -102,3 +102,4 @@ for i in range(0,len(dataset)):
         folium.CircleMarker([dataset['latitude'].iloc[i],dataset['longitude'].iloc[i]], radius = 3, color = col, fill = col).add_to(map_plot)
 folium_static(map_plot)
 st.write(len(dataset.index))
+st.map(dataset(dataset['Cluster'!=-1]))
