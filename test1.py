@@ -38,6 +38,8 @@ vis['time']= pd.to_datetime(vis['time'],format= '%H:%M' )
 
 #vis.set_index(['date/time'], inplace = True)
 data2 = vis
+
+
 if st.checkbox('Show raw data'):
     st.subheader('Raw data')
     st.write(data2)
@@ -61,6 +63,8 @@ with st.sidebar:
     if st.checkbox('Add time element'):
         hour_to_filter = st.slider('hour from', 0, 23, 0, key = 2)
         hour_end = st.slider('hour to', 0, 24, 24,key = 1)
+        st.subheader('Map of all accidents from %s:00 to %s:00' % (hour_to_filter, hour_end))
+
     else:
         hour_to_filter, hour_end = [0,24]
 # Some number in the range 0-23
@@ -68,11 +72,10 @@ with st.sidebar:
 filtered_data = data2[(data2['time'].dt.hour >= hour_to_filter) & (data2['time'].dt.hour < hour_end)
 &(data2['date'].dt.date >=date1) & (data2['date'].dt.date <= date2)]
 
-st.subheader('Map of all accidents from %s:00 to %s:00' % (hour_to_filter, hour_end))
 st.map(filtered_data)
 # Using object notation
 st.write(len(filtered_data.index))
-
+dataset = dataset[:100]
 max_cluster_distance = 100
 min_samples_in_cluster = 5
 
@@ -89,18 +92,13 @@ location = dataset['latitude'].mean(), dataset['longitude'].mean()
 
 map_plot = folium.Map(location=location,zoom_start=13)
 clust_colours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928']
-fg = folium.FeatureGroup(name= 'Marker')
-
+folium.TileLayer('cartodbpositron').add_to(map_plot)
 for i in range(0,len(dataset)):
     colouridx = dataset['Cluster'].iloc[i]
     if colouridx == -1:
         pass
     else:
         col = clust_colours[colouridx%len(clust_colours)]
-        fg.add_child(       folium.Marker([dataset['latitude'].iloc[i],dataset['longitude'].iloc[i]]).add_to(map_plot))
-    height=500,
-st_folium(map_plot,
-    feature_group_to_add=fg,
-    width=1200,
-    height=500,)
+        folium.CircleMarker([dataset['latitude'].iloc[i],dataset['longitude'].iloc[i]], radius = 3, color = col, fill = col).add_to(map_plot)
+folium_static(map_plot)
 st.write(len(dataset.index))
