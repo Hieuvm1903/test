@@ -1,5 +1,4 @@
 
-!pip install folium
 import folium
 
 import streamlit as st
