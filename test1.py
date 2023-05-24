@@ -36,7 +36,6 @@ data = pd.concat([City_of_London, Westminster], axis = 0)
 vis = data.loc[:,['date','time','longitude','latitude']]
 vis['time']= pd.to_datetime(vis['time'],format= '%H:%M' )
 
-#vis.set_index(['date/time'], inplace = True)
 data2 = vis
 
 
@@ -105,3 +104,37 @@ for i in range(0,len(dataset)):
 st.subheader('Cluster by location')
 folium_static(map_plot)
 st.write(len(dataset.index))
+
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data = dataset
+road_cond = data["road_surface_conditions"].value_counts()
+
+road_cond_arr = data["road_surface_conditions"].unique()
+road_num_acc_arr = road_cond.values
+
+weather_cond = data["weather_conditions"].value_counts() 
+
+weather_cond_arr = data["weather_conditions"].unique()
+weather_num_acc_arr = weather_cond.values
+plt.figure(figsize = (20,9),facecolor='grey')
+plt.subplot(1, 2, 1)
+
+plt.pie(road_num_acc_arr, labels = road_cond_arr, colors = sns.color_palette(),startangle = 30,textprops={'size': 'large'},explode=(0.02,0.02,0.02,0.02,0.3),autopct="%1.1f%%")
+plt.legend()
+plt.title("How Do Weather Events Impact Roads",weight="bold")
+
+
+plt.subplot(1, 2, 2)
+
+plt.pie(weather_num_acc_arr, labels = weather_cond_arr,colors = sns.color_palette(),startangle = 30,textprops={'size': 'large'},explode=(0.01,0.01,0.01,0.01,0.01,0.20,0.3,0.50,0.7),autopct="%1.1f%%")
+plt.legend(loc ="lower left")
+plt.title("Accident Rate by Weather Conditions",weight="bold")
+
+my_circle = plt.Circle((0,0),0.5, color ='grey')
+fig = plt.gcf()
+fig.gca().add_artist(my_circle)
+
+st.pyplot(fig)
