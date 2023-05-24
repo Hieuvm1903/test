@@ -110,6 +110,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 data = dataset
+st.write(data)
 road_cond = data['road_surface_conditions'].value_counts()
 
 road_cond_arr = data['road_surface_conditions'].unique()
