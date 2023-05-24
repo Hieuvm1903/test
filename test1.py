@@ -56,11 +56,11 @@ from sklearn.cluster import DBSCAN as dbscan
 
 with st.sidebar:
     
-    date1 = st.date_input("from",key = "start",min_value  = datetime.date(2012, 1, 1), max_value = datetime.date.today(), value =  datetime.date(2012, 1, 1) )
-    date2 = st.date_input("to",key = "finish",min_value  = date1, max_value = datetime.date.today())
+    date1 = st.date_input("From",key = "start",min_value  = datetime.date(2012, 1, 1), max_value = datetime.date.today(), value =  datetime.date(2012, 1, 1) )
+    date2 = st.date_input("To",key = "finish",min_value  = date1, max_value = datetime.date.today())
     if st.checkbox('Add time element'):
-        hour_to_filter = st.slider('hour from', 0, 23, 0, key = 2)
-        hour_end = st.slider('hour to', 0, 24, 24,key = 1)
+        hour_to_filter = st.slider('From this hour', 0, 23, 0, key = 2)
+        hour_end = st.slider('To this hour', 0, 24, 24,key = 1)
         st.subheader('Map of all accidents from %s:00 to %s:00' % (hour_to_filter, hour_end))
 
     else:
@@ -102,5 +102,6 @@ for i in range(0,len(dataset)):
     else:
         col = clust_colours[colouridx%len(clust_colours)]
         folium.CircleMarker([dataset['latitude'].iloc[i],dataset['longitude'].iloc[i]], radius = 3, color = col, fill = col).add_to(map_plot)
+st.subheader('Cluster by location')
 folium_static(map_plot)
 st.write(len(dataset.index))
