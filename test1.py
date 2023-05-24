@@ -110,14 +110,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 data = dataset
-road_cond = data["road_surface_conditions"].value_counts()
+road_cond = data['road_surface_conditions'].value_counts()
 
-road_cond_arr = data["road_surface_conditions"].unique()
+road_cond_arr = data['road_surface_conditions'].unique()
 road_num_acc_arr = road_cond.values
 
-weather_cond = data["weather_conditions"].value_counts() 
+weather_cond = data['road_surface_conditions'].value_counts() 
 
-weather_cond_arr = data["weather_conditions"].unique()
+weather_cond_arr = data['weather_conditions'].unique()
 weather_num_acc_arr = weather_cond.values
 plt.figure(figsize = (20,9),facecolor='grey')
 plt.subplot(1, 2, 1)
