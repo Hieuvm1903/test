@@ -8,8 +8,9 @@ import numpy as np
 import datetime
 
 from streamlit_folium import st_folium, folium_static
-
-st.title('Accidents in UK')
+import warnings
+warnings.filterwarnings('ignore')
+st.title('Decision Support System: Accidents in London')
 
 DATE_COLUMN = 'date'
 
@@ -77,8 +78,8 @@ if st.checkbox('Show raw data'):
 st.write(len(filtered_data.index))
 
 dataset = filtered_data
-max_cluster_distance = 150
-min_samples_in_cluster = 12
+max_cluster_distance = st.slider('Max distance', 10, 200, 150,key = 'ep',step = 5)
+min_samples_in_cluster = st.slider('Min number', 2, 20, 12,key = 'minx')
 
 location_data = dataset[['latitude','longitude']]
 
@@ -101,9 +102,8 @@ for i in range(0,len(dataset)):
     else:
         col = clust_colours[colouridx%len(clust_colours)]
         folium.CircleMarker([dataset['latitude'].iloc[i],dataset['longitude'].iloc[i]], radius = 3, color = col, fill = col).add_to(map_plot)
-st.subheader('Cluster by location')
+st.subheader('Cluster accidents hotspot by location')
 folium_static(map_plot)
-st.write(len(dataset.index))
 
 
 import matplotlib.pyplot as plt
@@ -119,13 +119,14 @@ weather_cond = data['weather_conditions'].value_counts()
 
 weather_cond_arr = data['weather_conditions'].unique()
 weather_num_acc_arr = weather_cond.values
+st.subheader('Accident Rate by each Factors')
 
 plt.figure(figsize = (20,9),facecolor='grey')
 plt.subplot(1, 2, 1)
 
 plt.pie(road_num_acc_arr, labels = road_cond_arr, colors = sns.color_palette(),startangle = 30,textprops={'size': 'large'},explode=(0.02,0.02,0.02,0.02,0.3),autopct="%1.1f%%")
 plt.legend()
-plt.title("How Do Weather Events Impact Roads",weight="bold")
+plt.title("Accident Rate by Road Conditions",weight="bold")
 
 
 plt.subplot(1, 2, 2)
@@ -135,5 +136,38 @@ plt.legend(loc ="lower left")
 plt.title("Accident Rate by Weather Conditions",weight="bold")
 
 fig = plt.gcf()
+
+st.pyplot(fig)
+
+light_cond = data['light_conditions'].value_counts()
+
+light_cond_arr = data['light_conditions'].unique()
+light_num_acc_arr = road_cond.values
+
+road_type = data['road_type'].value_counts() 
+
+road_type_arr = data['road_type'].unique()
+road_type_num_acc_arr = road_type.values
+
+plt.figure(figsize = (20,9),facecolor='grey')
+plt.subplot(1, 2, 1)
+
+plt.pie(light_num_acc_arr, labels = light_cond_arr, colors = sns.color_palette(),startangle = 30,textprops={'size': 'large'},explode=(0.02,0.02,0.02,0.02,0.3),autopct="%1.1f%%")
+plt.legend()
+plt.title("Accident Rate by Light Conditions",weight="bold")
+
+
+plt.subplot(1, 2, 2)
+
+plt.pie(road_type_num_acc_arr, labels =road_type_arr,colors = sns.color_palette(),startangle = 30,textprops={'size': 'large'},autopct="%1.1f%%")
+plt.legend(loc ="lower left")
+plt.title("Accident Rate by Road Type",weight="bold")
+
+fig = plt.gcf()
+
+st.pyplot(fig)
+st.subheader('Accidents by time')
+fig = plt.figure(figsize=(10, 8))
+sns.countplot(data,x="day_of_week")
 
 st.pyplot(fig)
