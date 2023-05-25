@@ -192,3 +192,54 @@ fig = plt.figure(figsize=(10,10))
 sns.countplot(df_uk,x="speed_limit")
 st.pyplot(fig)
 st.divider() 
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC, LinearSVC
+from sklearn.metrics import log_loss
+
+accidents = data
+accident_ml = accidents.drop('accident_severity' ,axis=1)
+accident_ml = accident_ml[['did_police_officer_attend_scene_of_accident','day_of_week' , 'weather_conditions' , 'road_surface_conditions', 'light_conditions','speed_limit']]
+
+# Split the data into a training and test set.
+X_train, X_test, y_train, y_test = train_test_split(accident_ml.values, accidents['accident_severity'].values,test_size=0.20, random_state=99)
+random_forest = RandomForestClassifier(n_estimators=200)
+random_forest.fit(X_train,y_train)
+Y_pred = random_forest.predict(X_test)
+random_forest.score(X_test, y_test)
+acc_random_forest1 = round(random_forest.score(X_test, y_test) * 100, 2)
+
+sk_report = classification_report(
+    digits=6,
+    y_true=y_test, 
+    y_pred=Y_pred)
+
+pd.crosstab(y_test, Y_pred, rownames=['Actual'], colnames=['Predicted'], margins=True)
+
+from sklearn.model_selection import RandomizedSearchCV
+param_grid = {
+    'bootstrap': [True],
+    'max_depth': [80, 90, 100, 110],
+    'max_features': [4, 5],
+    'min_samples_leaf': [5, 10, 15],
+    'min_samples_split': [8, 10, 12],
+    'n_estimators': [100, 200, 300]
+}
+# Create a based model
+random_f = RandomForestClassifier()
+# Instantiate the grid search model
+grid_search = RandomizedSearchCV(estimator = random_f, param_distributions = param_grid, 
+                          cv = 3, n_jobs = -1, verbose = 2)
+
+grid_search.fit(X_train,y_train)
+fig = plt.figure(figsize=(12,6))
+feat_importances = pd.Series(random_forest.feature_importances_, index=accident_ml.columns)
+feat_importances.nlargest(5).plot(kind ='bar')
+
+st.pyplot(fig)
+st.divider() 
