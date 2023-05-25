@@ -178,9 +178,8 @@ st.pyplot(fig)
 st.divider()  # 👈 Draws a horizontal rule
 
 
-df_acc = data
-acc_by_time = df_acc.time.value_counts()
-acc_by_time['hour']  = pd.to_datetime(acc_by_time.index,format= '%H:%M' ).hour
+acc_by_time = dataset.time
+acc_by_time['hour']  = pd.to_datetime(acc_by_time.values,format= '%H:%M' ).hour
 fig = plt.figure(figsize=(10, 8))
 
 sns.countplot(acc_by_time,x="hour")
