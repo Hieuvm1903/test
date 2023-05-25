@@ -170,6 +170,13 @@ plt.title("Accident Rate by Road Type",weight="bold")
 fig = plt.gcf()
 
 st.pyplot(fig)
+st.divider() 
+df_uk = data
+
+fig = plt.figure(figsize=(10,10))
+sns.countplot(df_uk,x="speed_limit")
+st.pyplot(fig)
+st.divider() 
 st.subheader('Accidents by time')
 fig = plt.figure(figsize=(10, 8))
 sns.countplot(data,x="day_of_week")
@@ -186,12 +193,6 @@ sns.countplot(acc_by_time,x="hour")
 st.pyplot(fig)
 st.divider() 
 
-df_uk = data
-
-fig = plt.figure(figsize=(10,10))
-sns.countplot(df_uk,x="speed_limit")
-st.pyplot(fig)
-st.divider() 
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -219,7 +220,6 @@ sk_report = classification_report(
     y_true=y_test, 
     y_pred=Y_pred)
 
-pd.crosstab(y_test, Y_pred, rownames=['Actual'], colnames=['Predicted'], margins=True)
 
 from sklearn.model_selection import RandomizedSearchCV
 param_grid = {
@@ -240,6 +240,6 @@ grid_search.fit(X_train,y_train)
 fig = plt.figure(figsize=(12,6))
 feat_importances = pd.Series(random_forest.feature_importances_, index=accident_ml.columns)
 feat_importances.nlargest(5).plot(kind ='bar')
-
+st.subheader('Factor importance')
 st.pyplot(fig)
 st.divider() 
