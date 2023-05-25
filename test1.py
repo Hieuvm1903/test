@@ -10,7 +10,7 @@ import datetime
 from streamlit_folium import st_folium, folium_static
 import warnings
 warnings.filterwarnings('ignore')
-st.title('Decision Support System: Accidents in London')
+st.title('Decision Support System: Road Safety in London')
 
 DATE_COLUMN = 'date'
 
@@ -102,6 +102,8 @@ for i in range(0,len(dataset)):
     else:
         col = clust_colours[colouridx%len(clust_colours)]
         folium.CircleMarker([dataset['latitude'].iloc[i],dataset['longitude'].iloc[i]], radius = 3, color = col, fill = col).add_to(map_plot)
+        
+st.divider()  # 👈 Draws a horizontal rule
 st.subheader('Cluster accidents hotspot by location')
 folium_static(map_plot)
 
@@ -142,7 +144,7 @@ st.pyplot(fig)
 light_cond = data['light_conditions'].value_counts()
 
 light_cond_arr = data['light_conditions'].unique()
-light_num_acc_arr = road_cond.values
+light_num_acc_arr = light_cond.values
 
 road_type = data['road_type'].value_counts() 
 
@@ -152,8 +154,10 @@ road_type_num_acc_arr = road_type.values
 plt.figure(figsize = (20,9),facecolor='grey')
 plt.subplot(1, 2, 1)
 
-plt.pie(light_num_acc_arr, labels = light_cond_arr, colors = sns.color_palette(),startangle = 30,textprops={'size': 'large'},explode=(0.02,0.02,0.02,0.02,0.3),autopct="%1.1f%%")
+plt.pie(light_num_acc_arr, labels = light_cond_arr, colors = sns.color_palette(),startangle = 30,textprops={'size': 'large'},autopct="%1.1f%%")
 plt.legend()
+st.divider()  # 👈 Draws a horizontal rule
+
 plt.title("Accident Rate by Light Conditions",weight="bold")
 
 
@@ -171,3 +175,14 @@ fig = plt.figure(figsize=(10, 8))
 sns.countplot(data,x="day_of_week")
 
 st.pyplot(fig)
+st.divider()  # 👈 Draws a horizontal rule
+
+
+df_acc = data
+acc_by_time = df_acc.time.value_counts()
+acc_by_time['hour']  = pd.to_datetime(acc_by_time.index,format= '%H:%M' ).hour
+fig = plt.figure(figsize=(10, 8))
+
+sns.countplot(acc_by_time,x="hour")
+st.pyplot(fig)
+st.divider() 
