@@ -185,3 +185,10 @@ fig = plt.figure(figsize=(10, 8))
 sns.countplot(acc_by_time,x="hour")
 st.pyplot(fig)
 st.divider() 
+
+df_uk = data
+
+fig = plt.figure(figsize=(10,10))
+sns.countplot(df_uk,x="speed_limit")
+st.pyplot(fig)
+st.divider() 
