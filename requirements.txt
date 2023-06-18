@@ -2,3 +2,4 @@ altair
 pandas
 streamlit
 folium
+streamlit_folium
