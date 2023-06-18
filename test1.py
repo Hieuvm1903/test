@@ -69,10 +69,27 @@ with st.sidebar:
 
 filtered_data = data2[(data2['time'].dt.hour >= hour_to_filter) & (data2['time'].dt.hour < hour_end)
 &(data2['date'].dt.date >=date1) & (data2['date'].dt.date <= date2)]
+
+import pyodbc 
+# Some other example server values are
+# server = 'localhost\sqlexpress' # for a named instance
+
+conn =  pyodbc.connect(
+    Trusted_Connection='Yes',
+    Driver='{ODBC Driver 17 for SQL Server}',
+    Server='EVOL',
+    Database='BKLIGHT'
+)
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM account")
+rows = cursor.fetchall()
+
+
 if st.checkbox('Show raw data'):
     st.subheader('Raw data')
-    st.write(data)
-    st.map(filtered_data)
+    for row in rows:
+        st.write(row)
+    
 
 # Using object notation
 st.write(len(filtered_data.index))
