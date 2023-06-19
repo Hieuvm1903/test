@@ -13,7 +13,7 @@ st.title('Decision Support System: Road Safety in London')
 
 DATE_COLUMN = 'date'
 
-DATA_URL = (r"C:\Users\Admin\Documents\GitHub\test\2021_data_accident.csv")
+DATA_URL = (r"2021_data_accident.csv")
 
 
 
